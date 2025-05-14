@@ -2,6 +2,7 @@ import express from 'express'
 import mongoose from 'mongoose'
 import linkRoutes from './routes/links.js';
 import userRoutes from './routes/users.js';
+import commentRoutes from './routes/comments.js';
 import cors from 'cors'
 import dotenv from 'dotenv'
 import bodyParser from 'body-parser';
@@ -18,6 +19,7 @@ app.use(cors())
 
 app.use('/api/links', linkRoutes)
 app.use('/api/users', userRoutes)
+app.use('/api/comments', commentRoutes)
 
 mongoose.connect(process.env.MONGO_URI, {
 

@@ -23,4 +23,28 @@ router.post('/new', async (req, res) => {
     }
 });
 
+router.put('/:id', async (req, res) => {
+    try {
+      const updatedLink = await Link.findByIdAndUpdate(
+        req.params.id,
+        { link: req.body.link },
+        { new: true }
+      );
+      if (!updatedLink) return res.status(404).json({ error: 'Link not found' });
+      res.status(200).json(updatedLink);
+    } catch (error) {
+      res.status(500).json({ error: 'Failed to update link' });
+    }
+  });
+  
+router.delete('/:id', async (req, res) => {
+    try {
+      const deletedLink = await Link.findByIdAndDelete(req.params.id);
+      if (!deletedLink) return res.status(404).json({ error: 'Link not found' });
+      res.status(200).json({ message: 'Link deleted successfully' });
+    } catch (error) {
+      res.status(500).json({ error: 'Failed to delete link' });
+    }
+});
+
 export default router;
