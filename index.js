@@ -5,13 +5,20 @@ import userRoutes from './routes/users.js';
 import commentRoutes from './routes/comments.js';
 import cors from 'cors'
 import dotenv from 'dotenv'
-import bodyParser from 'body-parser';
+import http from 'http';
+import { Server } from 'socket.io';
 
 dotenv.config()
 
 const app = express()
 
-
+const server = http.createServer(app)
+const io = new Server(server, {
+    cors: {
+      origin: 'http://localhost:5173',
+      methods: ['GET', 'POST'],
+    }
+  });
 
 app.use(express.json())
 app.use(cors())
@@ -28,8 +35,22 @@ mongoose.connect(process.env.MONGO_URI, {
     console.log('MongoDB connected');
 })
 
+io.on('connection', (socket) => {
+    console.log('A user connected:', socket.id);
+  
+    socket.on('userJoined', ({ firstName, lastName }) => {
+      console.log(`${firstName} ${lastName} joined`);
+      // broadcast to others
+      socket.broadcast.emit('newUserJoined', { firstName, lastName });
+    });
+  
+    socket.on('disconnect', () => {
+      console.log('User disconnected:', socket.id);
+    });
+  });
+
 // Server
 const PORT = 3000
-app.listen(PORT, ()=> {
-    console.log(`Server started on ${PORT}`)
-})
+server.listen(PORT, () => {
+    console.log('Server listening on port 3000');
+});
