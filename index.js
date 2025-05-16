@@ -45,7 +45,7 @@ io.on('connection', (socket) => {
     });
 
     socket.on('newComment', (data) => {
-        socket.broadcast.emit('newComment', data);
+        io.emit('newComment', data); 
       });
 
       socket.on('playVideo', (data) => {
