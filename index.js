@@ -43,6 +43,10 @@ io.on('connection', (socket) => {
       // broadcast to others
       socket.broadcast.emit('newUserJoined', { firstName, lastName });
     });
+
+    socket.on('newComment', (data) => {
+        socket.broadcast.emit('newComment', data);
+      });
   
     socket.on('disconnect', () => {
       console.log('User disconnected:', socket.id);
