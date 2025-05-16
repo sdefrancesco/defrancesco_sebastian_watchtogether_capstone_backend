@@ -47,6 +47,14 @@ io.on('connection', (socket) => {
     socket.on('newComment', (data) => {
         socket.broadcast.emit('newComment', data);
       });
+
+      socket.on('playVideo', (data) => {
+        socket.broadcast.emit('playVideo', data);
+      });
+    
+      socket.on('pauseVideo', (data) => {
+        socket.broadcast.emit('pauseVideo', data);
+      });
   
     socket.on('disconnect', () => {
       console.log('User disconnected:', socket.id);

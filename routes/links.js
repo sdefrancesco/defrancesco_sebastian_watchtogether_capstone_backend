@@ -25,6 +25,7 @@ router.post('/new', async (req, res) => {
 
 router.put('/:id', async (req, res) => {
     try {
+      console.log(req.body)
       const updatedLink = await Link.findByIdAndUpdate(
         req.params.id,
         { link: req.body.link },
